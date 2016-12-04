@@ -27,15 +27,15 @@ Elixir.webpack.mergeConfig({
         extensions: ['', '.js', '.vue'], // 文件名扩展
         alias: {
             vue: 'vue/dist/vue',
-            front: path.resolve(__dirname, 'resources/assets/js/blog'),
-            back: path.resolve(__dirname, 'resources/assets/js/back'),
+            blog: path.resolve(__dirname, 'resources/assets/js/blog'),
+            admin: path.resolve(__dirname, 'resources/assets/js/admin'),
             element: 'element-ui'
         }
     },
     module: {
         loaders: [
             {
-                test: /\.css$/,  // 加在css文件
+                test: /\.css$/,  // 加载css文件
                 loader: ['style', 'css'].join('!')
             }
         ]
