@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Admin extends Model
 {
-    //
+    public  function test()
+    {
+        $admins = $this->get();
+    }
 }
