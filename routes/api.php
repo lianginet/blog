@@ -22,9 +22,16 @@ use Dingo\Api\Routing\Router;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function (Router $api) {
-    $api->group([
-        'namespace' => 'App\Http\Controllers\Front\V1'
-    ], function (Router $api) {
-        $api->get('init', 'IndexController@init');
-    });
+
+});
+
+/**
+ * Admin 路由
+ */
+$api->version('v1', function (Router $api) {
+   $api->group([
+       'namespace' => 'App\Http\Controllers\Admin\V1'
+   ], function (Router $api) {
+       $api->post('login', 'AuthController@login');
+   });
 });

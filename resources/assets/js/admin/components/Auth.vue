@@ -51,6 +51,29 @@
                 }
             }
         },
+        http: {
+            root: '/api',
+        },
+        created() {
+            this.$http.post('login', {
+                    account: 'lianginet',
+                    password: 'password'
+                })
+                .then((response) => {
+                    console.log(response)
+                    if (response.data.token) {
+                        var storage = window.localStorage
+                        storage['user'] = {
+                            user: 'lianginet',
+                            token: response.data.token
+                        }
+                        this.$router.push('/')
+                    }
+                })
+                .catch((response) => {
+                    console.log(response)
+                })
+        },
         methods: {}
     }
 </script>
