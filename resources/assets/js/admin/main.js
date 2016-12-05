@@ -17,6 +17,8 @@ import Auth from './components/Auth'
 import Console from './components/Console'
 import Index from './components/dashboard/Index'
 
+import CreateArticle from './components/articles/Create'
+import Articles from './components/articles/List'
 const router = new VueRouter({
     // mode: 'history',
     base: __dirname,
@@ -32,6 +34,14 @@ const router = new VueRouter({
                 {
                     path: '',
                     component: Index
+                },
+                {
+                    path: 'articles',
+                    component: Articles,
+                },
+                {
+                    path: 'articles/create',
+                    component: CreateArticle,
                 }
             ]
         }
@@ -41,8 +51,12 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // 判断是否登录
     let storage = window.localStorage
+    if (storage.user && to.path == '/auth') {
+        console.log('Already logined')
+        return;
+    }
     if (!storage.user && to.path != '/auth') {
-        console.log('Not login')
+        console.log('Not logined')
         router.push('/auth')
     } else {
         next()

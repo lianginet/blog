@@ -1,27 +1,27 @@
 <template>
     <div class="sidebar">
-        <el-menu default-active="1-1" class="sidebar-menu">
+        <el-menu :default-active="$route.path" router class="sidebar-menu">
             <el-submenu index="1">
                 <template slot="title">
                     <i class="iconfont icon-dashboard"></i>
                     <span>Dashboard</span>
                 </template>
-                <el-menu-item index="1-1">数据报表</el-menu-item>
+                <el-menu-item index="/">数据报表</el-menu-item>
             </el-submenu>
-            <el-submenu index="22">
+            <el-submenu index="2">
                 <template slot="title">
                     <i class="iconfont icon-setting"></i>
                     <span>系统管理</span>
                 </template>
-                <el-menu-item index="22-1">管理员管理</el-menu-item>
+                <!--<el-menu-item index="/systems/admins">管理员管理</el-menu-item>-->
             </el-submenu>
-            <el-submenu index="2">
+            <el-submenu index="3">
                 <template slot="title">
                     <i class="iconfont icon-book"></i>
-                    <span>笔记管理</span>
+                    <span>文章管理</span>
                 </template>
-                <el-menu-item index="2-1">笔记列表</el-menu-item>
-                <el-menu-item index="2-2">添加笔记</el-menu-item>
+                <el-menu-item index="/articles">文章列表</el-menu-item>
+                <el-menu-item index="/articles/create">添加文章</el-menu-item>
             </el-submenu>
         </el-menu>
     </div>
