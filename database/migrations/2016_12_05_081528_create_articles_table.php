@@ -17,7 +17,14 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->string('title', 64);
             $table->string('desc', 256);
-            $table->integer('views');
+            $table->integer('c_id')
+                ->nullable()
+                ->default(0)
+                ->comment('category id');
+            $table->integer('views')->comment('view count');
+            $table->tinyInteger('status')
+                ->default(1)
+                ->comment('1published 0unpublished -1deleted');
             $table->timestamp('published_at');
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArticleDetailsTable extends Migration
+class CreateTagsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateArticleDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('article_details', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('a_id')
-                ->default(0)
-                ->comment('article id');
-            $table->string('desc', 256);
-            $table->text('content');
+            $table->string('name');
+            $table->tinyInteger('status')
+                ->default(1)
+                ->comment('1enabled 0disabled -1deleted');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateArticleDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('article_details');
+        Schema::dropIfExists('tags');
     }
 }
