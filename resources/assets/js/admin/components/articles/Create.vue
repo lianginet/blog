@@ -10,6 +10,24 @@
 
 <script type=text/ecmascript-6>
     import marked from 'marked'
+    let renderer = new marked.Renderer();
+    renderer.listitem = function(text) {
+        if (/^\s*\[[x|v]\]\s*/.test(text) || /^\s*\[ \]\s*/.test(text)) {
+            text = text
+                .replace(/^\s*\[ \]\s*/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled> ')
+                .replace(/^\s*\[[x|v]\]\s*/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled checked> ');
+            return '<li style="list-style: none">' + text + '</li>';
+        } else {
+            return '<li>' + text + '</li>';
+        }
+    };
+    marked.setOptions({
+        renderer: renderer,
+        gfm: true,
+        breaks: true,
+        sanitize: false,
+    })
+    console.log(marked('- [x]'))
     export default {
         data() {
             return {
@@ -19,7 +37,7 @@
         },
         computed: {
             compiledMarkdown() {
-                return marked(this.input, {sanitize: true})
+                return marked(this.input, {gfm: true})
             }
         },
         methods: {
@@ -29,10 +47,10 @@
             },
             escEventListener(event) {
                 if (27 === event.keyCode) {
-                    console.log('You clicked `esc` key')
-                    if (true === this.isFullScreen) {
+                    if (this.isFullScreen) {
                         this.toggleFullScreen()
                     }
+                    console.log('You clicked `esc` key')
                 }
             }
         },
