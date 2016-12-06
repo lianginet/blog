@@ -19,6 +19,7 @@ import Index from './components/dashboard/Index'
 
 import CreateArticle from './components/articles/Create'
 import Articles from './components/articles/List'
+
 const router = new VueRouter({
     // mode: 'history',
     base: __dirname,

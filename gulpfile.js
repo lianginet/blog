@@ -29,7 +29,7 @@ Elixir.webpack.mergeConfig({
             vue: 'vue/dist/vue',
             blog: path.resolve(__dirname, 'resources/assets/js/blog'),
             admin: path.resolve(__dirname, 'resources/assets/js/admin'),
-            element: 'element-ui'
+            element: 'element-ui',
         }
     },
     module: {
