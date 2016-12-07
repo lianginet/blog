@@ -1,6 +1,9 @@
 <template>
     <div id="editor" :class="{ 'full-screen': isFullScreen }">
         <div class="text-section">
+            <div class="title-container">
+                <el-input placeholder="输入文章标题"></el-input>
+            </div>
             <div class="textarea-container">
                 <textarea
                     v-model="input"
@@ -78,12 +81,16 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
+        .title-container {
+            border-bottom: 1px solid #eee;
+        }
         .textarea-container {
             position: absolute;
-            top: 50px;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 51px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            overflow: hidden;
         }
         textarea {
             width: 100%;
@@ -91,12 +98,22 @@
             border: none;
             resize: none;
             outline: none;
+            line-height: 1.6;
             font-size: 14px;
             font-family: 'Monaco', courier, monospace;
-            padding: 0;
+            padding: 0 20px 0 0;
         }
     }
     code {
         color: #f66;
+    }
+</style>
+<style lang=scss>
+    .text-section {
+        .el-input__inner {
+            border: none;
+            height: 40px;
+            line-height: 40px;
+        }
     }
 </style>

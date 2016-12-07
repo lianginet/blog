@@ -25,6 +25,8 @@ renderer.listitem = function(text) {
         return '<li style="list-style: none">' + text + '</li>'
     }
 };
+
+// Setting marked options
 marked.setOptions({
     renderer: renderer,
     gfm: true,
