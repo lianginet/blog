@@ -6,7 +6,9 @@
             </div>
             <div class="textarea-container">
                 <textarea
+                    id="textarea"
                     v-model="input"
+                    @keydown.tab="tabKeyEvent"
                     title="">
                 </textarea>
             </div>
@@ -36,12 +38,23 @@
                 console.log('isFullScreen:' + this.isFullScreen)
             },
             escEventListener(event) {
-                if (27 === event.keyCode) {
+                let keyCode = event.keyCode || event.which
+                if (27 === keyCode) {
                     if (this.isFullScreen) {
                         this.toggleFullScreen()
                     }
                     console.log('You clicked `esc` key')
                 }
+            },
+            tabKeyEvent(event) {
+                let el    = event.target,
+                    start = el.selectionStart,
+                    end   = el.selectionEnd
+
+                el.value = el.value.substring(0, start) + "    " + el.value.substring(end)
+                el.selectionStart = el.selectionEnd = start + 4
+
+                event.preventDefault()
             }
         },
         created() {
@@ -98,7 +111,7 @@
             border: none;
             resize: none;
             outline: none;
-            line-height: 1.6;
+            line-height: 1.8;
             font-size: 14px;
             font-family: 'Monaco', courier, monospace;
             padding: 0 20px 0 0;
