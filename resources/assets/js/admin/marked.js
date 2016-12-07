@@ -6,19 +6,29 @@ import marked from 'marked'
 // Optimization gfm task list -> checkbox type
 let renderer = new marked.Renderer()
 renderer.listitem = function(text) {
-    if (/^\s*\[[x|v]\]\s*/.test(text) || /^\s*\[ \]\s*/.test(text)) {
+    let isTaskList = false
+    if (/^<p>\[(x|v|\s)]\s*.*<\/p>/.test(text)) {
         text = text
-            .replace(/^\s*\[ \]\s*/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled> ')
-            .replace(/^\s*\[[x|v]\]\s*/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled checked> ');
-        return '<li style="list-style: none">' + text + '</li>';
+            .replace(/^<p>\[ ]\s*(.*)<\/p>/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled> ' + "$1")
+            .replace(/^<p>\[(x|v)]\s*(.*)<\/p>/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled checked> ' + "$2");
+        isTaskList = true
+    }
+    if (/^\s*\[(x|v|\s)]\s*/.test(text)) {
+        text = text
+            .replace(/^\s*\[ ]\s*/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled> ')
+            .replace(/^\s*\[(x|v)]\s*/, '<input type="checkbox" style="margin: 0 0.2em 0.25em -1.6em;vertical-align: middle;" disabled checked> ');
+        isTaskList = true
+    }
+    if (false === isTaskList) {
+        return '<li>' + text + '</li>'
     } else {
-        return '<li>' + text + '</li>';
+        return '<li style="list-style: none">' + text + '</li>'
     }
 };
 marked.setOptions({
     renderer: renderer,
     gfm: true,
-    breaks: true,
+    breaks: false,
     sanitize: false,
     smartLists: true
 })

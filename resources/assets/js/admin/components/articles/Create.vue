@@ -1,10 +1,14 @@
 <template>
     <div id="editor" :class="{ 'full-screen': isFullScreen }">
-        <textarea
-            v-model="input"
-            title="">
-        </textarea>
-        <div v-html="compiledMarkdown"></div>
+        <div class="text-section">
+            <div class="textarea-container">
+                <textarea
+                    v-model="input"
+                    title="">
+                </textarea>
+            </div>
+        </div>
+        <div class="result-section" v-html="compiledMarkdown"></div>
     </div>
 </template>
 
@@ -49,37 +53,48 @@
 </script>
 
 <style lang=scss scoped>
-    #editor.full-screen {
-        position: fixed;
-        z-index: 9;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: #fff;
-    }
     #editor {
         height: 100%;
-    }
-    textarea, #editor div {
-        display: inline-block;
-        width: 49%;
-        height: 100%;
-        vertical-align: top;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-        padding: 0 20px;
-    }
-
-    textarea {
-        border: none;
-        border-right: 1px solid #ccc;
-        resize: none;
-        outline: none;
-        font-size: 14px;
-        font-family: 'Monaco', courier, monospace;
-        padding: 20px;
+        &.full-screen {
+            position: fixed;
+            z-index: 9;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+        }
+        & > .text-section {
+            position: relative;
+            border-right: 1px solid #ccc;
+            width: 49%;
+        }
+        & > .text-section, & > .result-section {
+            display: inline-block;
+            width: 49%;
+            height: 100%;
+            vertical-align: top;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .textarea-container {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            resize: none;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Monaco', courier, monospace;
+            padding: 0;
+        }
     }
     code {
         color: #f66;
