@@ -58,7 +58,7 @@
                             type="date"
                             placeholder="选择日期"
                             :picker-options="pickerOptions0"
-                            style="width: 135px">
+                            style="width: 160px">
                     </el-date-picker>
                     -
                     <el-time-select
@@ -69,7 +69,7 @@
                                 end: '23:00'
                             }"
                             placeholder="选择时间"
-                            style="width: 135px">
+                            style="width: 160px">
                     </el-time-select>
                 </el-form-item>
                 <el-form-item label="文章描述" label-width="75px">
@@ -293,9 +293,9 @@
             }
         }
         .el-dialog--tiny {
-            width: 450px;
+            width: 500px;
             .el-dialog__body {
-                padding: 30px 40px 15px 40px;
+                padding: 30px 40px 5px 40px;
             }
             .el-form {
                 margin-right: 10px;
