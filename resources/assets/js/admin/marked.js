@@ -26,13 +26,18 @@ renderer.listitem = function(text) {
     }
 };
 
+let highlight = function (code) {
+    return require('highlight.js').highlightAuto(code).value
+}
+
 // Setting marked options
 marked.setOptions({
     renderer: renderer,
     gfm: true,
     breaks: true,
     sanitize: false,
-    smartLists: true
+    smartLists: true,
+    highlight: highlight
 })
 
 module.exports = marked

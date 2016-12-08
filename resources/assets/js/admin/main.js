@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import Element from 'element-ui'
 import 'element/lib/theme-default/index.css'
+import 'highlight.js/styles/github-gist.css'
 
 Vue.use(VueRouter)
 Vue.use(Element)

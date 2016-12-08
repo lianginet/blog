@@ -23,7 +23,7 @@
         </div>
         <div class="result-section">
             <div class="result-title">{{ form.title }}</div>
-            <div class="result-content" v-html="compiledMarkdown"></div>
+            <div class="result-content markdown" v-html="compiledMarkdown"></div>
         </div>
 
         <el-dialog title="编辑文章信息" v-model="dialogFormVisible" size="tiny">
@@ -70,6 +70,7 @@
                             }"
                             placeholder="选择时间"
                             style="width: 135px">
+                    </el-time-select>
                 </el-form-item>
                 <el-form-item label="文章描述" label-width="75px">
                     <el-input type="textarea" v-model="form.desc"></el-input>
@@ -301,5 +302,33 @@
             }
         }
     }
-
+    .markdown pre {
+        background: #f7f7f7;
+        padding: 15px;
+        border-radius: 2px;
+    }
+    .markdown code {
+        font-size: 12px;
+        padding: 4px 8px;
+        color: #ce6161;
+        background: #f7f7f7;
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+        line-height: 1.5;
+        border-radius: 4px;
+    }
+    .markdown pre code {
+        color: #555;
+        font-size: 14px;
+        white-space: pre-wrap;
+        padding: 0;
+        background: none;
+    }
+    .markdown blockquote {
+        border-left: 5px solid #eee;
+        padding-left: 35px;
+        margin-left: 0;
+    }
+    .markdown table {border-collapse: collapse; }
+    .markdown td, th {padding:0.2em 0.5em; }
+    .markdown th {text-align: left; border-bottom: 2px solid #eee; }
 </style>
