@@ -302,33 +302,42 @@
             }
         }
     }
-    .markdown pre {
-        background: #f7f7f7;
-        padding: 15px;
-        border-radius: 2px;
+    .markdown {
+        blockquote {
+            border-left: 5px solid #eee;
+            padding-left: 35px;
+            margin-left: 0;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        td, th {
+            padding:0.2em 0.5em;
+        }
+        th {
+            text-align: left;
+            border-bottom: 2px solid #eee;
+        }
+        code {
+            font-size: 12px;
+            padding: 4px 8px;
+            color: #ce6161;
+            background: #f7f7f7;
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 2px;
+            code {
+                color: #555;
+                font-size: 14px;
+                white-space: pre-wrap;
+                padding: 0;
+                background: none;
+            }
+        }
     }
-    .markdown code {
-        font-size: 12px;
-        padding: 4px 8px;
-        color: #ce6161;
-        background: #f7f7f7;
-        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-        line-height: 1.5;
-        border-radius: 4px;
-    }
-    .markdown pre code {
-        color: #555;
-        font-size: 14px;
-        white-space: pre-wrap;
-        padding: 0;
-        background: none;
-    }
-    .markdown blockquote {
-        border-left: 5px solid #eee;
-        padding-left: 35px;
-        margin-left: 0;
-    }
-    .markdown table {border-collapse: collapse; }
-    .markdown td, th {padding:0.2em 0.5em; }
-    .markdown th {text-align: left; border-bottom: 2px solid #eee; }
 </style>
