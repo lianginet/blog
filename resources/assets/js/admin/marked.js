@@ -30,7 +30,7 @@ renderer.listitem = function(text) {
 marked.setOptions({
     renderer: renderer,
     gfm: true,
-    breaks: false,
+    breaks: true,
     sanitize: false,
     smartLists: true
 })

@@ -4,13 +4,10 @@
             <div class="info-container">
                 <div class="info-title">
                     <el-tooltip content="全屏切换" placement="bottom">
-                        <i class="iconfont icon-full-screen"
-                           @click="toggleFullScreen">
-                        </i>
+                        <i class="iconfont icon-full-screen" @click="toggleFullScreen"></i>
                     </el-tooltip>
                     <el-tooltip content="more info" placement="bottom">
-                        <i class="iconfont icon-more"
-                           @click="dialogFormVisible = true"></i>
+                        <i class="iconfont icon-more" @click="dialogFormVisible = true"></i>
                     </el-tooltip>
                     <el-input v-model="form.title" placeholder="输入文章标题"></el-input>
                 </div>
@@ -24,7 +21,10 @@
                 </textarea>
             </div>
         </div>
-        <div class="result-section" v-html="compiledMarkdown"></div>
+        <div class="result-section">
+            <div class="result-title">{{ form.title }}</div>
+            <div class="result-content" v-html="compiledMarkdown"></div>
+        </div>
 
         <el-dialog title="编辑文章信息" v-model="dialogFormVisible" size="tiny">
             <el-form :model="form">
@@ -32,9 +32,9 @@
                     <el-input v-model="form.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="文章分类" label-width="75px">
-                    <el-select v-model="form.region" filterable placeholder="请选择文章分类">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="form.region" filterable clearable placeholder="请选择文章分类">
+                        <el-option label="Laravel" value="shanghai"></el-option>
+                        <el-option label="Python" value="beijing"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="文章标签" label-width="75px">
@@ -43,6 +43,7 @@
                             multiple
                             filterable
                             allow-create
+                            :multiple-limit="tabLimit"
                             placeholder="请选择文章标签">
                         <el-option
                                 v-for="item in options5"
@@ -50,6 +51,25 @@
                                 :value="item.value">
                         </el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="发布时间" label-width="75px">
+                    <el-date-picker
+                            v-model="value1"
+                            type="date"
+                            placeholder="选择日期"
+                            :picker-options="pickerOptions0"
+                            style="width: 135px">
+                    </el-date-picker>
+                    -
+                    <el-time-select
+                            v-model="value2"
+                            :picker-options="{
+                                start: '00:00',
+                                step: '01:00',
+                                end: '23:00'
+                            }"
+                            placeholder="选择时间"
+                            style="width: 135px">
                 </el-form-item>
                 <el-form-item label="文章描述" label-width="75px">
                     <el-input type="textarea" v-model="form.desc"></el-input>
@@ -115,7 +135,15 @@
                         label: 'JavaScript'
                     }
                 ],
-                value10: []
+                value10: [],
+                pickerOptions0: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
+                },
+                value1: '',
+                value2: '',
+                tabLimit: 3
             }
         },
         computed: {
@@ -172,7 +200,11 @@
             background: #fff;
         }
         & > .text-section {
-            position: relative;
+            position: absolute;
+            left: 0;
+            right: 50%;
+            top: 0;
+            bottom: 0;
             border-right: 1px solid #ccc;
             width: 49%;
             .info-title {
@@ -188,6 +220,9 @@
                     cursor: pointer;
                 }
                 .iconfont {
+                    display: inline-block;
+                    width: 45px;
+                    line-height: 45px;
                     font-size: 20px;
                     color: #888;
                 }
@@ -196,14 +231,29 @@
                 height: 200px;
             }
         }
-        & > .text-section, & > .result-section {
-            display: inline-block;
-            width: 49%;
-            height: 100%;
-            vertical-align: top;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
+        & > .result-section {
+            position: absolute;
+            left: 50%;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            .result-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: #555;
+                border-bottom: 1px solid #eee;
+                line-height: 45px;
+                padding: 0 10px;
+            }
+            .result-content {
+                position: absolute;
+                top: 46px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                overflow: auto;
+                padding: 0 15px;
+            }
         }
         .textarea-container {
             position: absolute;
@@ -244,7 +294,7 @@
         .el-dialog--tiny {
             width: 450px;
             .el-dialog__body {
-                padding: 30px 40px;
+                padding: 30px 40px 15px 40px;
             }
             .el-form {
                 margin-right: 10px;
