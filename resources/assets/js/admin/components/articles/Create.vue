@@ -319,8 +319,11 @@
             border-bottom: 2px solid #eee;
         }
         code {
+            position: relative;
+            display: inline-block;
+            margin-top: -2px;
             font-size: 12px;
-            padding: 4px 8px;
+            padding: 3px 8px;
             color: #ce6161;
             background: #f7f7f7;
             font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -336,6 +339,7 @@
                 font-size: 14px;
                 white-space: pre-wrap;
                 padding: 0;
+                margin: 0;
                 background: none;
             }
         }

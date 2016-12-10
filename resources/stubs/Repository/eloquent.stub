@@ -1,0 +1,19 @@
+<?php
+
+namespace {repositoryNamespace};
+
+use {modelNamespace}\{modelClass};
+use {contractNamespace}\{repositoryClass} as {repositoryClass}Contract;
+
+class {repositoryClass} extends {baseRepositoryClass} implements {repositoryClass}Contract
+{
+    /**
+     * @ var {modelClass}
+     */
+    private ${model};
+
+    public function __construct({modelClass} ${model})
+    {
+        $this->{model} = ${model};
+    }
+}
