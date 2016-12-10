@@ -3,6 +3,9 @@
         <div class="text-section">
             <div class="info-container">
                 <div class="info-title">
+                    <el-tooltip content="保存文章" placement="bottom">
+                        <i class="iconfont icon-save" @click="saveArticle"></i>
+                    </el-tooltip>
                     <el-tooltip content="全屏切换" placement="bottom">
                         <i class="iconfont icon-full-screen" @click="toggleFullScreen"></i>
                     </el-tooltip>
@@ -150,6 +153,9 @@
                 el.selectionStart = el.selectionEnd = start + 4
 
                 event.preventDefault() // 阻止默认事件
+            },
+            saveArticle() {
+                alert('you clicked save button')
             }
         },
         http: {
@@ -283,7 +289,7 @@
         .text-section {
             .info-title {
                 .el-input {
-                    margin-right: 90px;
+                    margin-right: 135px;
                     .el-input__inner {
                         border: none;
                         height: 45px;
