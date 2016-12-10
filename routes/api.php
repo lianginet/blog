@@ -33,5 +33,10 @@ $api->version('v1', function (Router $api) {
        'namespace' => 'App\Http\Controllers\Admin\V1'
    ], function (Router $api) {
        $api->post('login', 'AuthController@login');
+
+       /**
+        * Articles route
+        */
+       $api->post('getArticleRelatedInfo', 'ArticlesController@getArticleRelatedInfo');
    });
 });

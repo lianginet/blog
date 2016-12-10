@@ -7,78 +7,83 @@
                         <i class="iconfont icon-full-screen" @click="toggleFullScreen"></i>
                     </el-tooltip>
                     <el-tooltip content="more info" placement="bottom">
-                        <i class="iconfont icon-more" @click="dialogFormVisible = true"></i>
+                        <i class="iconfont icon-more" @click="articleDialogVisible = true"></i>
                     </el-tooltip>
-                    <el-input v-model="form.title" placeholder="输入文章标题"></el-input>
+                    <el-input v-model="article.title" placeholder="输入文章标题"></el-input>
                 </div>
             </div>
             <div class="textarea-container">
                 <textarea
                     id="textarea"
-                    v-model="input"
+                    v-model="article.content"
                     @keydown.tab="tabKeyEvent"
                     title="">
                 </textarea>
             </div>
         </div>
         <div class="result-section">
-            <div class="result-title">{{ form.title }}</div>
+            <div class="result-title">{{ article.title }}</div>
             <div class="result-content markdown" v-html="compiledMarkdown"></div>
         </div>
 
-        <el-dialog title="编辑文章信息" v-model="dialogFormVisible" size="tiny">
+        <el-dialog title="编辑文章信息" v-model="articleDialogVisible" size="tiny">
             <el-form :model="form">
                 <el-form-item label="文章标题" label-width="75px">
-                    <el-input v-model="form.title" auto-complete="off"></el-input>
+                    <el-input v-model="article.title" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="文章分类" label-width="75px">
-                    <el-select v-model="form.region" filterable clearable placeholder="请选择文章分类">
-                        <el-option label="Laravel" value="shanghai"></el-option>
-                        <el-option label="Python" value="beijing"></el-option>
+                    <el-select
+                            v-model="article.category"
+                            filterable
+                            allow-create
+                            clearable
+                            placeholder="请选择文章分类">
+                        <el-option
+                                v-for="category in categories"
+                                :value="category.value"
+                                :label="category.label">
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="文章标签" label-width="75px">
                     <el-select
-                            v-model="value10"
+                            v-model="article.tags"
                             multiple
                             filterable
+                            clearable
                             allow-create
-                            :multiple-limit="tabLimit"
+                            :multiple-limit="3"
                             placeholder="请选择文章标签">
                         <el-option
-                                v-for="item in options5"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="tag in tags"
+                                :label="tag.label"
+                                :value="tag.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="发布时间" label-width="75px">
                     <el-date-picker
-                            v-model="value1"
+                            v-model="date"
                             type="date"
                             placeholder="选择日期"
-                            :picker-options="pickerOptions0"
+                            :picker-options="dateOptions"
                             style="width: 160px">
                     </el-date-picker>
                     -
                     <el-time-select
-                            v-model="value2"
-                            :picker-options="{
-                                start: '00:00',
-                                step: '01:00',
-                                end: '23:00'
-                            }"
+                            v-model="time"
+                            :picker-options="timeOptions"
                             placeholder="选择时间"
                             style="width: 160px">
                     </el-time-select>
                 </el-form-item>
                 <el-form-item label="文章描述" label-width="75px">
-                    <el-input type="textarea" v-model="form.desc"></el-input>
+                    <el-input type="textarea" v-model="article.desc"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="articleDialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="articleDialogVisible = false">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -90,67 +95,37 @@
     export default {
         data() {
             return {
-                input: '### title',
                 isFullScreen: false,
-                options: [
-                    {
-                        value: '选项1',
-                        label: '黄金糕'
-                    }, {
-                        value: '选项2',
-                        label: '双皮奶'
-                    }, {
-                        value: '选项3',
-                        label: '蚵仔煎'
-                    }, {
-                        value: '选项4',
-                        label: '龙须面'
-                    }, {
-                        value: '选项5',
-                        label: '北京烤鸭'
-                    }
-                ],
-                value5: [],
-                form: {
+                categories: [],
+                tags: [],
+                article: {
+                    id: 0,
                     title: '文章标题',
-                    name: '',
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    category: '',
+                    tags: [],
+                    publishedAt: '',
+                    desc: '',
+                    content: '## Title',
                 },
-                dialogFormVisible: false,
-                formLabelWidth: '75px',
-                options5: [
-                    {
-                        value: 'HTML',
-                        label: 'HTML'
-                    }, {
-                        value: 'CSS',
-                        label: 'CSS'
-                    }, {
-                        value: 'JavaScript',
-                        label: 'JavaScript'
-                    }
-                ],
-                value10: [],
-                pickerOptions0: {
+                date: '',
+                time: '',
+                articleDialogVisible: false,
+                dateOptions: {
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
                     }
                 },
-                value1: '',
-                value2: '',
-                tabLimit: 3
+                timeOptions: {
+                    start: '00:00',
+                    step: '01:00',
+                    end: '23:00'
+                },
             }
         },
         computed: {
             compiledMarkdown() {
-                return marked(this.input)
-            }
+                return marked(this.article.content)
+            },
         },
         methods: {
             toggleFullScreen() {
@@ -177,9 +152,35 @@
                 event.preventDefault() // 阻止默认事件
             }
         },
+        http: {
+            root: '/api',
+        },
         created() {
             // Add escEventListener
             window.addEventListener('keyup', this.escEventListener)
+
+            let vm = this
+            this.$http.post('getArticleRelatedInfo')
+                    .then((response) => {
+                        let categories = response.data.categories
+                        let tags = response.data.tags
+                        console.log(tags)
+                        for (let value in categories) {
+                            vm.categories.push({
+                                value: value,
+                                label: categories[value]
+                            })
+                        }
+                        for (let value in tags) {
+                            vm.tags.push({
+                                value: value,
+                                label: tags[value]
+                            })
+                        }
+                    })
+                    .catch((response) => {
+                        console.log(response.data)
+                    })
         },
         destroyed() {
             // Remove escEventListener
