@@ -14,7 +14,6 @@ elixir((mix) => {
     mix.browserSync({
         files: [
             'public/**/*',
-            'app/**/*',
         ],
         proxy: 'admin.blog.app'
     })

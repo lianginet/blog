@@ -85,6 +85,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
+                <el-checkbox v-model="article.wiki">添加到wiki</el-checkbox>
                 <el-button @click="articleDialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="articleDialogVisible = false">确 定</el-button>
             </div>
@@ -106,6 +107,7 @@
                     title: '文章标题',
                     category: '',
                     tags: [],
+                    wiki: false,
                     publishedAt: '',
                     desc: '',
                     content: '## Title',
@@ -123,6 +125,7 @@
                     step: '01:00',
                     end: '23:00'
                 },
+                saveArticleTimer: '',
             }
         },
         computed: {
@@ -156,6 +159,20 @@
             },
             saveArticle() {
                 alert('you clicked save button')
+
+                // Save article
+                let vm = this
+                this.$http.post('saveArticle', {article: vm.article})
+                        .then((response) => {
+                            console.log(response.data)
+                            let data = response.data
+                            if (!vm.article.id) {
+                                vm.article.id = data.id
+                            }
+                        })
+                        .catch((response) => {
+                            console.log(response.data)
+                        })
             }
         },
         http: {
@@ -165,12 +182,12 @@
             // Add escEventListener
             window.addEventListener('keyup', this.escEventListener)
 
+            // Get article related info
             let vm = this
             this.$http.post('getArticleRelatedInfo')
                     .then((response) => {
                         let categories = response.data.categories
                         let tags = response.data.tags
-                        console.log(tags)
                         for (let value in categories) {
                             vm.categories.push({
                                 value: value,
@@ -187,10 +204,16 @@
                     .catch((response) => {
                         console.log(response.data)
                     })
+
+            // Auto save article every 5 minutes
+            this.saveArticleTimer = setInterval(() => {
+                this.saveArticle()
+            }, 300000)
         },
         destroyed() {
             // Remove escEventListener
             window.removeEventListener('keyup', this.escEventListener)
+            clearInterval(this.saveArticleTimer)
         }
     }
 </script>
@@ -281,6 +304,10 @@
             font-size: 14px;
             font-family: 'Monaco', courier, monospace;
             padding: 0 20px 0 0;
+        }
+        .el-checkbox {
+            float: left;
+            margin-left: 25px;
         }
     }
 </style>

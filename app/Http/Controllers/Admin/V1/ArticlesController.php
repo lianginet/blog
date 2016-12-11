@@ -30,4 +30,11 @@ class ArticlesController extends Controller
             'tags' => $tags,
         ];
     }
+
+    public function saveArticle(Request $request)
+    {
+        return [
+            'id' => 1,
+        ];
+    }
 }
