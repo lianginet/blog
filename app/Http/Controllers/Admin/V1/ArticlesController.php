@@ -33,6 +33,7 @@ class ArticlesController extends Controller
 
     public function saveArticle(Request $request)
     {
+        dd($request->input("article.content"));
         return [
             'id' => 1,
         ];

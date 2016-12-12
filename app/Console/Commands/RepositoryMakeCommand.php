@@ -82,7 +82,7 @@ class RepositoryMakeCommand extends GeneratorCommand
 
         return [
             'repository' => $root . 'Repositories\\Eloquents',
-            'contract'   => $root . 'Repositories\\Contracts',
+            'contract'   => $root . 'Contracts\\Repositories',
             'model'      => $root . 'Models',
         ];
     }
@@ -140,7 +140,7 @@ class RepositoryMakeCommand extends GeneratorCommand
 
     private function getContractFullPath()
     {
-        $path = app_path('Repositories/Contracts');
+        $path = app_path('Contracts/Repositories');
         $this->makeDirectory($path);
 
         $name = $this->argument('name') . '.php';
