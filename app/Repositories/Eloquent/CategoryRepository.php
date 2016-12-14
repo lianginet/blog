@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquents;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Category;
 use App\Contracts\Repositories\CategoryRepository as CategoryRepositoryContract;
@@ -8,12 +8,12 @@ use App\Contracts\Repositories\CategoryRepository as CategoryRepositoryContract;
 class CategoryRepository extends Repository implements CategoryRepositoryContract
 {
     /**
-     * @ var Category
+     * CategoryRepository constructor.
+     *
+     * @param Category $category
      */
-    private $category;
-
     public function __construct(Category $category)
     {
-        $this->category = $category;
+        $this->model = $category;
     }
 }

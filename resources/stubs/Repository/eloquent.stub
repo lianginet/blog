@@ -8,12 +8,12 @@ use {contractNamespace}\{repositoryClass} as {repositoryClass}Contract;
 class {repositoryClass} extends {baseRepositoryClass} implements {repositoryClass}Contract
 {
     /**
-     * @ var {modelClass}
+     * {repositoryClass} constructor.
+     *
+     * @param {modelClass} ${model}
      */
-    private ${model};
-
     public function __construct({modelClass} ${model})
     {
-        $this->{model} = ${model};
+        $this->model = ${model};
     }
 }

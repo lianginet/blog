@@ -40,7 +40,7 @@ class RepositoryMakeCommand extends GeneratorCommand
      */
     public function getSavePath()
     {
-        return app_path('Repositories/Eloquents');
+        return app_path('Repositories/Eloquent');
     }
 
     /**
@@ -81,7 +81,7 @@ class RepositoryMakeCommand extends GeneratorCommand
         $root = $this->getRootNamespace();
 
         return [
-            'repository' => $root . 'Repositories\\Eloquents',
+            'repository' => $root . 'Repositories\\Eloquent',
             'contract'   => $root . 'Contracts\\Repositories',
             'model'      => $root . 'Models',
         ];
@@ -185,7 +185,7 @@ class RepositoryMakeCommand extends GeneratorCommand
 
     private function getBaseRepositoryFullPath()
     {
-        $path = app_path('Repositories/Eloquents');
+        $path = app_path('Repositories/Eloquent');
         $this->makeDirectory($path);
 
         $name = 'Repository.php';

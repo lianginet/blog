@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquents;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Article;
 use App\Contracts\Repositories\ArticleRepository as ArticleRepositoryContract;
@@ -8,12 +8,17 @@ use App\Contracts\Repositories\ArticleRepository as ArticleRepositoryContract;
 class ArticleRepository extends Repository implements ArticleRepositoryContract
 {
     /**
-     * @ var Article
+     * ArticleRepository constructor.
+     *
+     * @param Article $article
      */
-    private $article;
-
     public function __construct(Article $article)
     {
-        $this->article = $article;
+        $this->model = $article;
+    }
+
+    public function test()
+    {
+
     }
 }

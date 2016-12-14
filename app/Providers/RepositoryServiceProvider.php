@@ -23,6 +23,18 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $models = [
+            'Article', 'Category', 'Tag', 'Admin'
+        ];
+
+        /**
+         * Bind interface to implements class
+         */
+        foreach ($models as $model) {
+            $this->app->bind(
+                "App\\Contracts\\Repositories\\{$model}Repository",
+                "App\\Repositories\\Eloquent\\{$model}Repository"
+            );
+        }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Eloquents;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Tag;
 use App\Contracts\Repositories\TagRepository as TagRepositoryContract;
@@ -8,12 +8,12 @@ use App\Contracts\Repositories\TagRepository as TagRepositoryContract;
 class TagRepository extends Repository implements TagRepositoryContract
 {
     /**
-     * @ var Tag
+     * TagRepository constructor.
+     *
+     * @param Tag $tag
      */
-    private $tag;
-
     public function __construct(Tag $tag)
     {
-        $this->tag = $tag;
+        $this->model = $tag;
     }
 }

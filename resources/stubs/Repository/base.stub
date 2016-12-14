@@ -4,5 +4,5 @@ namespace {repositoryNamespace};
 
 class {repositoryClass}
 {
-    // todo
+    protected $model;
 }
