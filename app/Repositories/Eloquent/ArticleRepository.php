@@ -16,9 +16,4 @@ class ArticleRepository extends Repository implements ArticleRepositoryContract
     {
         $this->model = $article;
     }
-
-    public function test()
-    {
-
-    }
 }

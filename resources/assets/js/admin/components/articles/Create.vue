@@ -158,25 +158,35 @@
                 event.preventDefault() // 阻止默认事件
             },
             saveArticle() {
-                alert('you clicked save button')
-
-                // Save article
+                console.log('you clicked save button')
                 let vm = this
-                this.$http.post('saveArticle', {article: vm.article})
-                        .then((response) => {
-                            console.log(response.data)
-                            let data = response.data
-                            if (!vm.article.id) {
-                                vm.article.id = data.id
-                            }
-                        })
-                        .catch((response) => {
-                            console.log(response.data)
-                        })
+                if (! this.article.id) {
+                    // Create article
+                    this.$http.post('', vm.article)
+                            .then((response) => {
+                                // console.log(response.data)
+                                let data = response.data
+                                if (!vm.article.id) {
+                                    vm.article.id = data.id
+                                }
+                            })
+                            .catch((response) => {
+                                console.log(response.data.errors)
+                            })
+                } else {
+                    // Update article
+                    this.$http.put(vm.article.id.toString(), vm.article)
+                            .then((response) => {
+                                console.log(response.data)
+                            })
+                            .catch((response) => {
+                                console.log(response.data)
+                            })
+                }
             }
         },
         http: {
-            root: '/api',
+            root: '/api/articles',
         },
         created() {
             // Add escEventListener
@@ -184,26 +194,26 @@
 
             // Get article related info
             let vm = this
-            this.$http.post('getArticleRelatedInfo')
-                    .then((response) => {
-                        let categories = response.data.categories
-                        let tags = response.data.tags
-                        for (let value in categories) {
-                            vm.categories.push({
-                                value: value,
-                                label: categories[value]
-                            })
-                        }
-                        for (let value in tags) {
-                            vm.tags.push({
-                                value: value,
-                                label: tags[value]
-                            })
-                        }
-                    })
-                    .catch((response) => {
-                        console.log(response.data)
-                    })
+            // this.$http.post('getArticleRelatedInfo')
+            //         .then((response) => {
+            //             let categories = response.data.categories
+            //             let tags = response.data.tags
+            //             for (let value in categories) {
+            //                 vm.categories.push({
+            //                     value: value,
+            //                     label: categories[value]
+            //                 })
+            //             }
+            //             for (let value in tags) {
+            //                 vm.tags.push({
+            //                     value: value,
+            //                     label: tags[value]
+            //                 })
+            //             }
+            //         })
+            //         .catch((response) => {
+            //             console.log(response.data)
+            //         })
 
             // Auto save article every 5 minutes
             this.saveArticleTimer = setInterval(() => {

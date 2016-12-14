@@ -37,7 +37,6 @@ $api->version('v1', function (Router $api) {
        /**
         * Articles route
         */
-       $api->post('getArticleRelatedInfo', 'ArticleController@getArticleRelatedInfo');
-       $api->post('saveArticle', 'ArticleController@saveArticle');
+       $api->resource('articles', 'ArticleController');
    });
 });

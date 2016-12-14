@@ -11,6 +11,7 @@ namespace App\Services;
 use App\Contracts\Repositories\ArticleRepository as Article;
 use App\Contracts\Repositories\CategoryRepository as Category;
 use App\Contracts\Repositories\TagRepository as Tag;
+use Illuminate\Http\Request;
 
 class ArticleService
 {
@@ -37,9 +38,9 @@ class ArticleService
      */
     public function __construct(Article $article, Category $category, Tag $tag)
     {
-        $this->article  = $article;
+        $this->article = $article;
         $this->category = $category;
-        $this->tag      = $tag;
+        $this->tag = $tag;
     }
 
     /**
@@ -70,5 +71,66 @@ class ArticleService
     public function getTags()
     {
         return $this->tag->all();
+    }
+
+    /**
+     * 函数说明
+     *
+     * @return void
+     */
+    public function saveArticle(Request $request)
+    {
+//        $this->article->update();
+    }
+
+    public function create($request)
+    {
+        // Get the article fields
+        $data = [
+            'title'   => $request['title'],
+            'is_wiki' => $request['wiki'] === 'true',
+        ];
+        if ($request['publishedAt']) {
+            $data['published_at'] = $request['publishedAt'];
+        }
+        if ($request['category']) {
+            $data['cid'] = $this->getCategoryId(trim($request['category']));
+        }
+
+        // Create article
+        if(!$article = $this->article->create($data)) {
+            return 0;
+        }
+        if ($request['tags']) {
+            $this->setArticleTags($article->id, trim($request['tags']));
+        }
+    }
+
+    /**
+     * Get category id by name
+     *
+     * @param $name
+     * @return int|mixed
+     */
+    public function getCategoryId($name)
+    {
+        if ($category = $this->category->findBy('name', $name, ['id'])) {
+            return $category->id;
+        }
+        return 0;
+    }
+
+    private function setArticleTags($aid, $tags)
+    {
+        foreach ($tags as $index => $name) {
+            if ($tag = $this->tag->findBy('name', $name, ['id'])) {
+                $tid = $tag->id;
+            } else {
+                $this->tag->create([
+                    'name' => $name,
+                ]);
+            }
+
+        }
     }
 }

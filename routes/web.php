@@ -42,3 +42,5 @@ Route::group(['domain' => 'admin.blog.app'], function () {
     Route::get('/about', $back);
     Route::get('/auth', $back);
 });
+
+Route::get('save', 'TestController@save');

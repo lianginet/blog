@@ -16,12 +16,16 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 64);
-            $table->string('desc', 256);
-            $table->integer('c_id')
+            $table->integer('cid')
                 ->nullable()
                 ->default(0)
                 ->comment('category id');
-            $table->integer('views')->comment('view count');
+            $table->boolean('is_wiki')
+                ->default(false)
+                ->comment('Is Add to wiki？');
+            $table->integer('views')
+                ->default(0)
+                ->comment('view count');
             $table->tinyInteger('status')
                 ->default(1)
                 ->comment('1published 0unpublished -1deleted');
