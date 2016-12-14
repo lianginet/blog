@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\ArticleTagRepository as ArticleTag;
 use App\Contracts\Repositories\ArticleRepository as Article;
 use App\Contracts\Repositories\CategoryRepository as Category;
 use App\Contracts\Repositories\TagRepository as Tag;
@@ -31,16 +32,22 @@ class ArticleService
     private $tag;
 
     /**
+     * @var \App\Repositories\Eloquent\ArticleTagRepository
+     */
+    private $articleTag;
+
+    /**
      * ArticleService constructor.
      * @param $article
      * @param Category $category
      * @param Tag $tag
      */
-    public function __construct(Article $article, Category $category, Tag $tag)
+    public function __construct(Article $article, Category $category, Tag $tag, ArticleTag $articleTag)
     {
         $this->article = $article;
         $this->category = $category;
         $this->tag = $tag;
+        $this->articleTag = $articleTag;
     }
 
     /**
@@ -107,6 +114,29 @@ class ArticleService
     }
 
     /**
+     * Set article tags
+     *
+     * @param $aid
+     * @param $tags
+     * @return void
+     */
+    private function setArticleTags($aid, $tags)
+    {
+        // Delete this article's tag
+        $this->articleTag->deleteBy('aid', $aid);
+
+        // Add tag for this article
+        foreach ($tags as $index => $name) {
+            $tid = $this->getTagId($name);
+            $data = [
+                'aid' => $aid,
+                'tid' => $tid,
+            ];
+            $this->articleTag->create($data);
+        }
+    }
+
+    /**
      * Get category id by name
      *
      * @param $name
@@ -115,22 +145,32 @@ class ArticleService
     public function getCategoryId($name)
     {
         if ($category = $this->category->findBy('name', $name, ['id'])) {
-            return $category->id;
+            $cid =  $category->id;
+        } else {
+            $cid = $this->category->create([
+                'name' => $name,
+            ])->id;
         }
-        return 0;
+
+        return $cid;
     }
 
-    private function setArticleTags($aid, $tags)
+    /**
+     * Get tag id by name
+     *
+     * @param $name
+     * @return mixed
+     */
+    private function getTagId($name)
     {
-        foreach ($tags as $index => $name) {
-            if ($tag = $this->tag->findBy('name', $name, ['id'])) {
-                $tid = $tag->id;
-            } else {
-                $this->tag->create([
-                    'name' => $name,
-                ]);
-            }
-
+        if ($tag = $this->tag->findBy('name', $name)) {
+            $tid = $tag->id;
+        } else {
+            $tid = $this->tag->create([
+                'name' => $name,
+            ])->id;
         }
+
+        return $tid;
     }
 }

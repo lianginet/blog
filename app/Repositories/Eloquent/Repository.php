@@ -112,4 +112,31 @@ class Repository
             ->where($attr, '=', $value)
             ->update($data);
     }
+
+    /**
+     * Delete the row by id
+     *
+     * @param $id
+     * @return bool|null
+     */
+    public function delete($id)
+    {
+        return $this->model
+            ->where('id', '=', $id)
+            ->delete();
+    }
+
+    /**
+     * Delete the row by attribute
+     *
+     * @param $attr
+     * @param $value
+     * @return bool|null
+     */
+    public function deleteBy($attr, $value)
+    {
+        return $this->model
+            ->where($attr, '=', $value)
+            ->delete();
+    }
 }
