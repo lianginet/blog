@@ -24,7 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $models = [
-            'Article', 'Category', 'Tag', 'Admin'
+            'Article', 'Category', 'Tag', 'Admin', 'ArticleTag', 'ArticleDetail'
         ];
 
         /**

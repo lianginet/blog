@@ -125,7 +125,7 @@
                     step: '01:00',
                     end: '23:00'
                 },
-                saveArticleTimer: '',
+                autoSaveTimer: '',
             }
         },
         computed: {
@@ -167,7 +167,7 @@
                                 // console.log(response.data)
                                 let data = response.data
                                 if (!vm.article.id) {
-                                    vm.article.id = data.id
+                                    vm.article.id = data.aid
                                 }
                             })
                             .catch((response) => {
@@ -216,14 +216,14 @@
             //         })
 
             // Auto save article every 5 minutes
-            this.saveArticleTimer = setInterval(() => {
-                this.saveArticle()
-            }, 300000)
+            // this.autoSaveTimer = setInterval(() => {
+            //     this.saveArticle()
+            // }, 300000)
         },
         destroyed() {
             // Remove escEventListener
             window.removeEventListener('keyup', this.escEventListener)
-            clearInterval(this.saveArticleTimer)
+            clearInterval(this.autoSaveTimer)
         }
     }
 </script>

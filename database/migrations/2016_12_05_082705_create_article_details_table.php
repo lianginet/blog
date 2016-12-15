@@ -15,10 +15,7 @@ class CreateArticleDetailsTable extends Migration
     {
         Schema::create('article_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('a_id')
-                ->default(0)
-                ->comment('article id');
-            $table->string('desc', 256);
+            $table->integer('aid')->default(0)->comment('article id');
             $table->text('content');
             $table->timestamps();
         });

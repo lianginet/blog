@@ -129,14 +129,28 @@ class Repository
     /**
      * Delete the row by attribute
      *
-     * @param $attr
-     * @param $value
+     * @param string $attr
+     * @param string $value
      * @return bool|null
      */
-    public function deleteBy($attr, $value)
+    public function deleteBy(string $attr, string $value)
     {
         return $this->model
             ->where($attr, '=', $value)
             ->delete();
+    }
+
+    /**
+     * Get count by attr
+     *
+     * @param string $attr
+     * @param string $value
+     * @return int
+     */
+    public function getCountBy(string $attr, string $value)
+    {
+        return $this->model
+            ->where($attr, '=', $value)
+            ->count();
     }
 }

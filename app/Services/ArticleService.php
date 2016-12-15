@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\ArticleDetailRepository as ArticleDetail;
 use App\Contracts\Repositories\ArticleTagRepository as ArticleTag;
 use App\Contracts\Repositories\ArticleRepository as Article;
 use App\Contracts\Repositories\CategoryRepository as Category;
@@ -37,17 +38,23 @@ class ArticleService
     private $articleTag;
 
     /**
+     * @var \App\Repositories\Eloquent\ArticleDetailRepository
+     */
+    private $articleDetail;
+
+    /**
      * ArticleService constructor.
      * @param $article
      * @param Category $category
      * @param Tag $tag
      */
-    public function __construct(Article $article, Category $category, Tag $tag, ArticleTag $articleTag)
+    public function __construct(Article $article, Category $category, Tag $tag, ArticleTag $articleTag, ArticleDetail $articleDetail)
     {
-        $this->article = $article;
+        $this->article  = $article;
         $this->category = $category;
-        $this->tag = $tag;
-        $this->articleTag = $articleTag;
+        $this->tag      = $tag;
+        $this->articleTag    = $articleTag;
+        $this->articleDetail = $articleDetail;
     }
 
     /**
@@ -90,12 +97,13 @@ class ArticleService
 //        $this->article->update();
     }
 
-    public function create($request)
+    public function save($request, int $aid = 0)
     {
         // Get the article fields
         $data = [
-            'title'   => $request['title'],
+            'title'   => trim($request['title']),
             'is_wiki' => $request['wiki'] === 'true',
+            'desc'    => trim($request['desc']),
         ];
         if ($request['publishedAt']) {
             $data['published_at'] = $request['publishedAt'];
@@ -104,13 +112,34 @@ class ArticleService
             $data['cid'] = $this->getCategoryId(trim($request['category']));
         }
 
-        // Create article
-        if(!$article = $this->article->create($data)) {
-            return 0;
+        if (0 === $aid) {
+            // Create article
+            if($article = $this->article->create($data)) {
+                $aid = $article->id;
+                // Create article detail
+                $data = [
+                    'aid' => $aid,
+                    'content' => trim($request['content']),
+                ];
+                $this->articleDetail->create($data);
+            }
+        } else {
+            $this->article->update($data, $aid);
+
+            // Update article detail
+            $data = [
+                'content' => trim($request['content']),
+            ];
+            $this->articleDetail->updateBy($data, 'aid', $aid);
         }
-        if ($request['tags']) {
-            $this->setArticleTags($article->id, trim($request['tags']));
+
+        if ($aid && ! empty($request['tags'])) {
+            $this->setArticleTags($aid, $request['tags']);
         }
+
+        return [
+            'aid' => $aid,
+        ];
     }
 
     /**
@@ -122,17 +151,16 @@ class ArticleService
      */
     private function setArticleTags($aid, $tags)
     {
-        // Delete this article's tag
-        $this->articleTag->deleteBy('aid', $aid);
+        $this->articleTag->deleteOldRow($aid);
 
         // Add tag for this article
-        foreach ($tags as $index => $name) {
-            $tid = $this->getTagId($name);
+        foreach ($tags as $name) {
+            $tid = $this->getTagId(trim($name));
             $data = [
                 'aid' => $aid,
                 'tid' => $tid,
             ];
-            $this->articleTag->create($data);
+            $this->articleTag->createNewRow($data);
         }
     }
 

@@ -16,4 +16,17 @@ class TagRepository extends Repository implements TagRepositoryContract
     {
         $this->model = $tag;
     }
+
+    /**
+     * Update articleTag count
+     *
+     * @param int $aid
+     * @param int $num
+     * @return void
+     */
+    public function updateCount(int $id, int $num = 1)
+    {
+        $this->model->where('id', '=', $id)
+            ->increment('count', $num);
+    }
 }

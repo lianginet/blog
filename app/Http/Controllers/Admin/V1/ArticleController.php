@@ -24,13 +24,13 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display a listing of the articles.
+     * 函数说明
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function index()
     {
-        //
+        return $this->article->getArticles();
     }
 
     /**
@@ -47,11 +47,12 @@ class ArticleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param ArticleRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     public function store(ArticleRequest $request)
     {
-        $this->article->create($request->all());
+        $request = $request->all();
+        return $this->article->save($request);
     }
 
     /**
@@ -79,13 +80,14 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param ArticleRequest $request
+     * @param $id
+     * @return array
      */
-    public function update(ArticleRequest $request, $id)
+    public function update(ArticleRequest $request,int $id)
     {
-        return response()->json($request->all());
+        $request = $request->all();
+        return $this->article->save($request, $id);
     }
 
     /**
