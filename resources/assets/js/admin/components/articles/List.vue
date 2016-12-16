@@ -1,15 +1,24 @@
 <template>
     <div class="content">
-        <el-table :data="articles" border style="width: 100%">
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="title" label="标题"></el-table-column>
-            <el-table-column prop="category" label="分类"></el-table-column>
+        <el-table :data="articles" border style="width: 100%;">
+            <el-table-column prop="id" label="ID" width="80" align="center" fixed></el-table-column>
+            <el-table-column prop="title" label="标题" width="250" fixed></el-table-column>
+            <el-table-column prop="cid" label="分类" width="150"></el-table-column>
             <el-table-column prop="tags" label="标签"></el-table-column>
-            <el-table-column prop="status" label="文章状态"></el-table-column>
-            <el-table-column prop="created_at" label="创建日期"></el-table-column>
-            <el-table-column prop="published_at" label="发布日期"></el-table-column>
-            <el-table-column prop="updated_at" label="更新日期"></el-table-column>
+            <el-table-column prop="status" label="文章状态" width="100"></el-table-column>
+            <el-table-column prop="created_at" label="创建日期" width="180"></el-table-column>
+            <el-table-column prop="published_at" label="发布日期" width="180"></el-table-column>
+            <el-table-column prop="updated_at" label="更新日期" width="180"></el-table-column>
         </el-table>
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="pagination.page"
+                :page-sizes="[10, 15, 20]"
+                :page-size="pagination.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="pagination.total">
+        </el-pagination>
     </div>
 </template>
 
@@ -17,33 +26,51 @@
     export default {
         data() {
             return {
-                tableData: [
-                    {
-                        date: '2016-05-02',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    },
-                    {
-                        date: '2016-05-04',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1517 弄'
-                    },
-                    {
-                        date: '2016-05-01',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1519 弄'
-                    },
-                    {
-                        date: '2016-05-03',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1516 弄'
-                    }
-                ]
+                articles: [],
+                pagination: {
+                    total: 0,
+                    page: 1,
+                    pageSize: 10,
+                }
+            }
+        },
+        http: {
+            root: '/api',
+        },
+        created() {
+            this.getArticles(this.pagination.page, this.pagination.pageSize)
+        },
+        methods: {
+            getArticles(page, pageSize) {
+                console.log(page, pageSize)
+                let vm = this
+                this.$http.get('articles', {params: {page: page, pageSize: pageSize}})
+                        .then((response) => {
+                            console.log('Get articles')
+                            let result = response.data
+                            vm.articles = result.data
+                            // Set vm.pagination's params
+                            let pagination = result.meta.pagination
+                            vm.pagination.total = pagination.total
+                            vm.currentPage = pagination.current_page
+                            vm.pageSize = pagination.per_page
+                        })
+                        .catch((response) => {
+                            console.log(response.data)
+                        })
+            },
+            handleSizeChange(pageSize) {
+                this.getArticles(1, pageSize)
+            },
+            handleCurrentChange(page) {
+                this.getArticles(page, this.pagination.pageSize)
             }
         }
     }
 </script>
 
 <style lang=scss scoped>
-
+    .el-pagination {
+        margin-top: 10px;
+    }
 </style>

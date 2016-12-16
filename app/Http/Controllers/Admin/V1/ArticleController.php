@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\V1;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Controllers\Controller;
 use App\Services\ArticleService;
+use App\Transformers\ArticleTransformer;
+use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -26,11 +28,14 @@ class ArticleController extends Controller
     /**
      * 函数说明
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @return \Dingo\Api\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->article->getArticles();
+        dd($request->all());
+        $articles = $this->article->getArticles();
+
+        return $this->response->paginator($articles, new ArticleTransformer);
     }
 
     /**

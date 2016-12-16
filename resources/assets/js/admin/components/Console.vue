@@ -82,7 +82,9 @@
         .content-container {
             height: 100%;
             overflow: auto;
-            padding: 20px;
+            .content {
+                margin: 10px;
+            }
         }
     }
 </style>

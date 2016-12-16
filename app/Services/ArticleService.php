@@ -64,7 +64,7 @@ class ArticleService
      */
     public function getArticles()
     {
-        return $this->article->all();
+        return $this->article->paginate(10);
     }
 
     /**

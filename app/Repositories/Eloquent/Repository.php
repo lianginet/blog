@@ -76,6 +76,18 @@ class Repository
     /**
      * 函数说明
      *
+     * @param int $num
+     * @param array $columns
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function paginate(int $num, array $columns = ['*'])
+    {
+        return $this->model->paginate($num, $columns);
+    }
+
+    /**
+     * 函数说明
+     *
      * @param array $data
      * @return \Eloquent
      */
