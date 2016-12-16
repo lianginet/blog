@@ -1,14 +1,14 @@
 <template>
     <div class="content">
-        <el-table :data="articles" border style="width: 100%;">
+        <el-table :data="articles" border max-height="500">
             <el-table-column prop="id" label="ID" width="80" align="center" fixed></el-table-column>
-            <el-table-column prop="title" label="标题" width="250" fixed></el-table-column>
-            <el-table-column prop="cid" label="分类" width="150"></el-table-column>
-            <el-table-column prop="tags" label="标签"></el-table-column>
-            <el-table-column prop="status" label="文章状态" width="100"></el-table-column>
-            <el-table-column prop="created_at" label="创建日期" width="180"></el-table-column>
-            <el-table-column prop="published_at" label="发布日期" width="180"></el-table-column>
-            <el-table-column prop="updated_at" label="更新日期" width="180"></el-table-column>
+            <el-table-column prop="title" label="标题" width="250"></el-table-column>
+            <el-table-column prop="cid" label="分类" align="center"></el-table-column>
+            <el-table-column prop="tags" label="标签" align="center"></el-table-column>
+            <el-table-column prop="status" label="文章状态" align="center" width="100"></el-table-column>
+            <el-table-column prop="created_at" label="创建日期" align="center" width="180"></el-table-column>
+            <el-table-column prop="published_at" label="发布日期" align="center" width="180"></el-table-column>
+            <el-table-column prop="updated_at" label="更新日期" align="center" width="180"></el-table-column>
         </el-table>
         <el-pagination
                 @size-change="handleSizeChange"
@@ -44,7 +44,7 @@
             getArticles(page, pageSize) {
                 console.log(page, pageSize)
                 let vm = this
-                this.$http.get('articles', {params: {page: page, pageSize: pageSize}})
+                this.$http.get('articles', {params: {page: page, size: pageSize}})
                         .then((response) => {
                             console.log('Get articles')
                             let result = response.data
@@ -60,6 +60,7 @@
                         })
             },
             handleSizeChange(pageSize) {
+                this.pagination.pageSize = pageSize
                 this.getArticles(1, pageSize)
             },
             handleCurrentChange(page) {
@@ -70,6 +71,9 @@
 </script>
 
 <style lang=scss scoped>
+    .el-table {
+        width: 100%;
+    }
     .el-pagination {
         margin-top: 10px;
     }

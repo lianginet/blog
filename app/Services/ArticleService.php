@@ -58,13 +58,15 @@ class ArticleService
     }
 
     /**
-     * Get article list
+     * Get articles
      *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     * @param array $request
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getArticles()
+    public function getArticles(array $request)
     {
-        return $this->article->paginate(10);
+        $pageSize = $request['size'] ?: 10;
+        return $this->article->paginate($pageSize);
     }
 
     /**

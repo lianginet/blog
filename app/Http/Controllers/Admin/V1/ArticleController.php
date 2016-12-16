@@ -32,8 +32,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        dd($request->all());
-        $articles = $this->article->getArticles();
+        $articles = $this->article->getArticles($request->all());
 
         return $this->response->paginator($articles, new ArticleTransformer);
     }
