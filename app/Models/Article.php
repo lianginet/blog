@@ -15,4 +15,9 @@ class Article extends Model
         'status',
         'published_at',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category', 'cid');
+    }
 }

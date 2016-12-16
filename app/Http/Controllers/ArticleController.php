@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleRequest;
-use App\Http\Controllers\Controller;
 use App\Services\ArticleService;
 use App\Transformers\ArticleTransformer;
 use Illuminate\Http\Request;

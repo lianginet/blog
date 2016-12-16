@@ -66,7 +66,9 @@ class ArticleService
     public function getArticles(array $request)
     {
         $pageSize = $request['size'] ?: 10;
-        return $this->article->paginate($pageSize);
+        $articles = $this->article->paginate($pageSize);
+
+        return $articles;
     }
 
     /**

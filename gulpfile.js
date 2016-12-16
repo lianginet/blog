@@ -7,15 +7,14 @@ elixir((mix) => {
     /**
      * webpack打包
      */
-    mix.webpack('main.js', 'public/assets/js/blog.js', 'resources/assets/js/blog')
-    mix.webpack('main.js', 'public/assets/js/admin.js', 'resources/assets/js/admin')
+    mix.webpack('main.js', 'public/assets/js/main.js')
 
     // 浏览器同步
     mix.browserSync({
         files: [
             'public/**/*',
         ],
-        proxy: 'admin.blog.app'
+        proxy: 'admin.notes.app'
     })
 });
 
@@ -26,8 +25,6 @@ Elixir.webpack.mergeConfig({
         extensions: ['', '.js', '.vue'], // 文件名扩展
         alias: {
             vue: 'vue/dist/vue',
-            blog: path.resolve(__dirname, 'resources/assets/js/blog'),
-            admin: path.resolve(__dirname, 'resources/assets/js/admin'),
             element: 'element-ui',
         }
     },

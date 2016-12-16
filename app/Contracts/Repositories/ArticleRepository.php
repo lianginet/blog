@@ -4,5 +4,5 @@ namespace App\Contracts\Repositories;
 
 interface ArticleRepository
 {
-    // todo
+//    public function getArticleBy();
 }

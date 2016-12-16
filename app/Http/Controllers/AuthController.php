@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\V1;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -17,8 +16,8 @@ class AuthController extends Controller
 //        } else {
 //            return 'login failure';
 //        }
-        return $this->response->array([
+        return [
             'token' => 'token_123456',
-        ]);
+        ];
     }
 }

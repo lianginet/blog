@@ -20,23 +20,14 @@ use Dingo\Api\Routing\Router;
 
 
 $api = app('Dingo\Api\Routing\Router');
-
-$api->version('v1', function (Router $api) {
-
-});
-
 /**
  * Admin 路由
  */
 $api->version('v1', function (Router $api) {
    $api->group([
-       'namespace' => 'App\Http\Controllers\Admin\V1'
+       'namespace' => 'App\Http\Controllers'
    ], function (Router $api) {
        $api->post('login', 'AuthController@login');
-
-       /**
-        * Articles route
-        */
        $api->resource('articles', 'ArticleController');
    });
 });
