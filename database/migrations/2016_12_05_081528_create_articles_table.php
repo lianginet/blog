@@ -21,7 +21,6 @@ class CreateArticlesTable extends Migration
             $table->boolean('is_wiki')->default(false)->comment('Is Add to wiki？');
             $table->integer('views')->default()->comment('view count');
             $table->tinyInteger('status')->default(1)->comment('1published 0unpublished -1deleted');
-            $table->timestamp('published_at');
             $table->timestamps();
         });
     }

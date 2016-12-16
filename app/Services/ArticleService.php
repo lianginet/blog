@@ -107,9 +107,6 @@ class ArticleService
             'is_wiki' => $request['wiki'] === 'true',
             'desc'    => trim($request['desc']),
         ];
-        if ($request['publishedAt']) {
-            $data['published_at'] = $request['publishedAt'];
-        }
         if ($request['category']) {
             $data['cid'] = $this->getCategoryId(trim($request['category']));
         }
