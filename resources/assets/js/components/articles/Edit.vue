@@ -94,7 +94,7 @@
 </template>
 
 <script type=text/ecmascript-6>
-    import marked from 'admin/marked'
+    import marked from '../../marked'
 
     export default {
         data() {
