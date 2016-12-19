@@ -113,6 +113,12 @@ class ArticleService
         if (count($temp)) {
             $article->tags = $temp;
         }
+        if ($article->created_at) {
+            $article->create_time = substr($article->created_at, 0, 10);
+        }
+        if ($article->updated_at) {
+            $article->update_time = substr($article->updated_at, 0, 10);
+        }
 
         $article->content = $this->articleDetail->findBy('aid', $aid)->content;
 

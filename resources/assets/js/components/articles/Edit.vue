@@ -98,16 +98,6 @@
                 date: '',
                 time: '',
                 articleDialogVisible: true,
-                dateOptions: {
-                    disabledDate(time) {
-                        return time.getTime() < Date.now() - 8.64e7;
-                    }
-                },
-                timeOptions: {
-                    start: '00:00',
-                    step: '01:00',
-                    end: '23:00'
-                },
                 autoSaveTimer: '',
             }
         },
