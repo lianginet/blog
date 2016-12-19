@@ -11,4 +11,9 @@ class Category extends Model
         'count',
         'status',
     ];
+
+    public function article()
+    {
+
+    }
 }

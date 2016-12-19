@@ -28,6 +28,8 @@ $api->version('v1', function (Router $api) {
        'namespace' => 'App\Http\Controllers'
    ], function (Router $api) {
        $api->post('login', 'AuthController@login');
+       $api->get('articles/{id}/edit', 'ArticleController@edit');
+       $api->get('articles/create', 'ArticleController@create');
        $api->resource('articles', 'ArticleController');
    });
 });

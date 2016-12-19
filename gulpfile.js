@@ -14,7 +14,7 @@ elixir((mix) => {
         files: [
             'public/**/*',
         ],
-        proxy: 'admin.notes.app'
+        proxy: 'notes.app'
     })
 });
 

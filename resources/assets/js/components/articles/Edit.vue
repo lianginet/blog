@@ -64,22 +64,6 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="发布时间" label-width="75px">
-                    <el-date-picker
-                            v-model="date"
-                            type="date"
-                            placeholder="选择日期"
-                            :picker-options="dateOptions"
-                            style="width: 160px">
-                    </el-date-picker>
-                    -
-                    <el-time-select
-                            v-model="time"
-                            :picker-options="timeOptions"
-                            placeholder="选择时间"
-                            style="width: 160px">
-                    </el-time-select>
-                </el-form-item>
                 <el-form-item label="文章描述" label-width="75px">
                     <el-input type="textarea" v-model="article.desc"></el-input>
                 </el-form-item>
@@ -99,7 +83,7 @@
     export default {
         data() {
             return {
-                isFullScreen: false,
+                isFullScreen: true,
                 categories: [],
                 tags: [],
                 article: {
@@ -108,7 +92,6 @@
                     category: '',
                     tags: [],
                     wiki: false,
-                    publishedAt: '',
                     desc: '',
                     content: '## Title',
                 },
@@ -151,11 +134,74 @@
                 let el    = event.target,
                     start = el.selectionStart,
                     end   = el.selectionEnd
-
                 el.value = el.value.substring(0, start) + "    " + el.value.substring(end)
                 el.selectionStart = el.selectionEnd = start + 4
 
                 event.preventDefault() // 阻止默认事件
+            },
+            getTheEditArticle() {
+                let vm = this
+                this.$http.get(this.$route.params.aid + '/edit', {})
+                        .then((response) => {
+                            console.log(response.data)
+                            let article = response.data.article
+                            vm.article.id       = article.id
+                            vm.article.title    = article.title
+                            vm.article.wiki     = article.wiki
+                            vm.article.desc     = article.desc
+                            vm.article.category = article.category
+                            vm.article.content  = article.content
+
+                            let categories = response.data.categories
+                            for (let value in categories) {
+                                vm.categories.push({
+                                    value: categories[value]['name'],
+                                    label: categories[value]['name']
+                                })
+                            }
+
+                            let tags = response.data.tags
+                            for (let value in tags) {
+                                vm.tags.push({
+                                    value: tags[value]['name'],
+                                    label: tags[value]['name']
+                                })
+                                for (let i in article.tags) {
+                                    if (article.tags[i] === tags[value]['name']) {
+                                        vm.article.tags.push(tags[value]['name'])
+                                    }
+                                }
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+            },
+            getArticleRelatedInfo() {
+                let vm = this
+                this.$http.get('create', {})
+                        .then((response) => {
+                            console.log(response.data)
+
+                            let categories = response.data.categories
+                            for (let value in categories) {
+                                vm.categories.push({
+                                    value: categories[value]['name'],
+                                    label: categories[value]['name']
+                                })
+                            }
+
+                            let tags = response.data.tags
+                            for (let value in tags) {
+                                vm.tags.push({
+                                    value: tags[value]['name'],
+                                    label: tags[value]['name']
+                                })
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
             },
             saveArticle() {
                 console.log('you clicked save button')
@@ -192,33 +238,11 @@
             // Add escEventListener
             window.addEventListener('keyup', this.escEventListener)
 
-            // Get article related info
-            let vm = this
-            // this.$http.post('getArticleRelatedInfo')
-            //         .then((response) => {
-            //             let categories = response.data.categories
-            //             let tags = response.data.tags
-            //             for (let value in categories) {
-            //                 vm.categories.push({
-            //                     value: value,
-            //                     label: categories[value]
-            //                 })
-            //             }
-            //             for (let value in tags) {
-            //                 vm.tags.push({
-            //                     value: value,
-            //                     label: tags[value]
-            //                 })
-            //             }
-            //         })
-            //         .catch((response) => {
-            //             console.log(response.data)
-            //         })
-
-            // Auto save article every 5 minutes
-            // this.autoSaveTimer = setInterval(() => {
-            //     this.saveArticle()
-            // }, 300000)
+            if ('editArticle' === this.$route.name) {
+                this.getTheEditArticle()
+            } else {
+                this.getArticleRelatedInfo()
+            }
         },
         destroyed() {
             // Remove escEventListener
@@ -337,7 +361,7 @@
             }
         }
         .el-dialog--tiny {
-            width: 500px;
+            width: 450px;
             .el-dialog__body {
                 padding: 30px 40px 5px 40px;
             }

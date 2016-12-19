@@ -27,6 +27,7 @@ class ArticleController extends Controller
     /**
      * 函数说明
      *
+     * @param Request $request
      * @return \Dingo\Api\Http\Response
      */
     public function index(Request $request)
@@ -37,13 +38,19 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 函数说明
      *
-     * @return \Illuminate\Http\Response
+     * @return array
      */
     public function create()
     {
-        //
+        $categories = $this->article->getCategories();
+        $tags       = $this->article->getTags();
+
+        return [
+            'categories' => $categories,
+            'tags'       => $tags,
+        ];
     }
 
     /**
@@ -66,28 +73,36 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        dd(123);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Get the willing edit article and related info
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return array
      */
     public function edit($id)
     {
-        //
+        $categories = $this->article->getCategories();
+        $tags       = $this->article->getTags();
+        $article    = $this->article->getArticleById($id);
+
+        return [
+            'article'    => $article,
+            'categories' => $categories,
+            'tags'       => $tags,
+        ];
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param ArticleRequest $request
-     * @param $id
+     * @param int $id
      * @return array
      */
-    public function update(ArticleRequest $request,int $id)
+    public function update(ArticleRequest $request, int $id)
     {
         $request = $request->all();
         return $this->article->save($request, $id);

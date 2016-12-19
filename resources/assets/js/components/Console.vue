@@ -38,6 +38,7 @@
         color: #555;
         line-height: 1.5;
         height: 100%;
+        min-width: 960px;
     }
     .wrapper {
         position: relative;

@@ -13,7 +13,6 @@ use App\Contracts\Repositories\ArticleTagRepository as ArticleTag;
 use App\Contracts\Repositories\ArticleRepository as Article;
 use App\Contracts\Repositories\CategoryRepository as Category;
 use App\Contracts\Repositories\TagRepository as Tag;
-use Illuminate\Http\Request;
 
 class ArticleService
 {
@@ -67,8 +66,57 @@ class ArticleService
     {
         $pageSize = $request['size'] ?: 10;
         $articles = $this->article->paginate($pageSize);
+        $articles->each(function ($item) {
+            if ($item->cid) {
+                $item->category = $item->category()->find($item->cid)->name;
+            } else {
+                $item->category = '-';
+            }
+            $articleTags = \App\Models\ArticleTag::where('aid', $item->id)->get();
+            $tags = [];
+            foreach ($articleTags as $at) {
+                $tags[] = $at->tag->name;
+            }
+            if (count($tags)) {
+                $item->tags = implode($tags, ', ');
+            } else {
+                $item->tags = '-';
+            }
+            if ($item->created_at) {
+                $item->create_time = substr($item->created_at, 0, 10);
+            }
+            if ($item->updated_at) {
+                $item->update_time = substr($item->updated_at, 0, 10);
+            }
+        });
 
         return $articles;
+    }
+
+    public function getArticleById($aid)
+    {
+        $article = $this->article->find($aid);
+        if ($article->cid) {
+            $article->category = $this->category->find($aid)->name;
+        }
+        // Get article tags
+        $articleTags = $this->articleTag->getBy('aid', $aid, ['tid'])->toArray();
+        $tagIds = [];
+        foreach ($articleTags as $item) {
+            $tagIds[] = $item['tid'];
+        }
+        $tags = $this->tag->getByIds($tagIds)->toArray();
+        $temp = [];
+        foreach ($tags as $item) {
+            $temp[] = $item['name'];
+        }
+        if (count($temp)) {
+            $article->tags = $temp;
+        }
+
+        $article->content = $this->articleDetail->findBy('aid', $aid)->content;
+
+        return $article;
     }
 
     /**
@@ -78,7 +126,7 @@ class ArticleService
      */
     public function getCategories()
     {
-        return $this->article->all();
+        return $this->category->all();
     }
 
     /**
@@ -89,16 +137,6 @@ class ArticleService
     public function getTags()
     {
         return $this->tag->all();
-    }
-
-    /**
-     * 函数说明
-     *
-     * @return void
-     */
-    public function saveArticle(Request $request)
-    {
-//        $this->article->update();
     }
 
     public function save($request, int $aid = 0)

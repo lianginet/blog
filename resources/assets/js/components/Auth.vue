@@ -62,7 +62,7 @@
                 .then((response) => {
                     console.log(response)
                     if (response.data.token) {
-                        var storage = window.localStorage
+                        let storage = window.localStorage
                         storage['user'] = {
                             user: 'lianginet',
                             token: response.data.token

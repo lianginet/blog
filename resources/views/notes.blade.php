@@ -17,6 +17,6 @@
     <div id="app">
         <router-view></router-view>
     </div>
-    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
 </body>
 </html>

@@ -2,10 +2,8 @@
     <div class="nav">
         <div class="logo">
             <i class="iconfont icon-favicon logo-icon"></i>
-            <span class="logo-text">后台管理系统</span>
+            <span class="logo-text">简易 Markdown 笔记</span>
         </div>
-
-
     </div>
 </template>
 <style lang=scss scoped>

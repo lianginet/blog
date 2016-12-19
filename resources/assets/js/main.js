@@ -18,7 +18,7 @@ import Auth from './components/Auth'
 import Console from './components/Console'
 import Index from './components/dashboard/Index'
 
-import CreateArticle from './components/articles/Create'
+import EditArticle from './components/articles/Edit'
 import Articles from './components/articles/List'
 
 const router = new VueRouter({
@@ -43,7 +43,13 @@ const router = new VueRouter({
                 },
                 {
                     path: 'articles/create',
-                    component: CreateArticle,
+                    name: 'createArticle',
+                    component: EditArticle,
+                },
+                {
+                    path: '/articles/:aid/edit',
+                    name: 'editArticle',
+                    component: EditArticle,
                 }
             ]
         }
@@ -58,7 +64,7 @@ router.beforeEach((to, from, next) => {
         return;
     }
     if (!storage.user && to.path != '/auth') {
-        console.log('Not logined')
+        console.log('Not logined!')
         router.push('/auth')
     } else {
         next()

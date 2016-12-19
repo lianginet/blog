@@ -20,7 +20,7 @@ class TagRepository extends Repository implements TagRepositoryContract
     /**
      * Update articleTag count
      *
-     * @param int $aid
+     * @param int $id
      * @param int $num
      * @return void
      */
@@ -28,5 +28,12 @@ class TagRepository extends Repository implements TagRepositoryContract
     {
         $this->model->where('id', '=', $id)
             ->increment('count', $num);
+    }
+
+    public function getByIds(array $ids, array $columns = ['*'])
+    {
+        return $this->model
+            ->whereIn('id', $ids)
+            ->get();
     }
 }
