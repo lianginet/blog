@@ -16,4 +16,11 @@ class ArticleRepository extends Repository implements ArticleRepositoryContract
     {
         $this->model = $article;
     }
+
+    public function paginate(int $num, array $columns = ['*'])
+    {
+        return $this->model
+            ->where('status', '!=', -1)
+            ->paginate($num, $columns);
+    }
 }

@@ -129,13 +129,20 @@ class Repository
      * Delete the row by id
      *
      * @param $id
+     * @param bool $delete
      * @return bool|null
      */
-    public function delete($id)
+    public function delete($id, $delete = true)
     {
-        return $this->model
-            ->where('id', '=', $id)
-            ->delete();
+        if ($delete === true) {
+            return $this->model
+                ->where('id', '=', $id)
+                ->delete();
+        } else {
+            return $this->model
+                ->where('id', '=', $id)
+                ->update(['status' => -1]);
+        }
     }
 
     /**
@@ -143,13 +150,20 @@ class Repository
      *
      * @param string $attr
      * @param string $value
+     * @param bool $delete
      * @return bool|null
      */
-    public function deleteBy(string $attr, string $value)
+    public function deleteBy(string $attr, string $value, $delete = true)
     {
-        return $this->model
-            ->where($attr, '=', $value)
-            ->delete();
+        if ($delete === true) {
+            return $this->model
+                ->where($attr, '=', $value)
+                ->delete();
+        } else {
+            return $this->model
+                ->where($attr, '=', $value)
+                ->update(['status' => -1]);
+        }
     }
 
     /**

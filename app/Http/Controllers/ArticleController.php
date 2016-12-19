@@ -73,7 +73,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        dd(123);
+        return $this->article->getArticleById($id);
     }
 
     /**
@@ -108,14 +108,9 @@ class ArticleController extends Controller
         return $this->article->save($request, $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        return $this->article->deleteArticleById($id);
+        return $id;
     }
 }

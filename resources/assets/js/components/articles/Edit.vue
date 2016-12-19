@@ -69,7 +69,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-checkbox v-model="article.wiki">添加到wiki</el-checkbox>
+                <!--<el-checkbox v-model="article.wiki">添加到wiki</el-checkbox>-->
                 <el-button @click="articleDialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="articleDialogVisible = false">确 定</el-button>
             </div>
@@ -97,7 +97,7 @@
                 },
                 date: '',
                 time: '',
-                articleDialogVisible: false,
+                articleDialogVisible: true,
                 dateOptions: {
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -215,6 +215,11 @@
                                 if (!vm.article.id) {
                                     vm.article.id = data.aid
                                 }
+                                vm.$message({
+                                    message: '文章保存成功！',
+                                    type: 'success',
+                                    duration: 500
+                                });
                             })
                             .catch((response) => {
                                 console.log(response.data.errors)
@@ -224,6 +229,11 @@
                     this.$http.put(vm.article.id.toString(), vm.article)
                             .then((response) => {
                                 console.log(response.data)
+                                vm.$message({
+                                    message: '文章保存成功！',
+                                    type: 'success',
+                                    duration: 500
+                                });
                             })
                             .catch((response) => {
                                 console.log(response.data)

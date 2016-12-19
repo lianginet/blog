@@ -19,7 +19,11 @@
         </div>
         <el-table :data="articles" border stripe max-height="500">
             <el-table-column prop="id" label="ID" width="80" align="center" fixed></el-table-column>
-            <el-table-column prop="title" label="标题" width="300"></el-table-column>
+            <el-table-column label="标题" inline-template :context="_self" width="300">
+                <span>
+                    <router-link :to="{name:'showArticle', params: {aid: row.id}}" class="article-title"><el-button type="text">{{ row.title }}</el-button></router-link>
+                </span>
+            </el-table-column>
             <el-table-column prop="category" label="分类" width="120" align="center"></el-table-column>
             <el-table-column prop="tags" label="标签" width="150" align="center"></el-table-column>
             <!--<el-table-column prop="status" label="文章状态" align="center" width="100"></el-table-column>-->
@@ -30,11 +34,11 @@
                     :context="_self"
                     fixed="right"
                     label="操作"
-                    algin="center"
+                    align="center"
                     width="100">
-                <span>
-                    <el-button type="text" size="small" @click="handleShow(row.id)">查看</el-button>
+                <span style="text-align:center">
                     <router-link :to="{name:'editArticle', params: {aid: row.id}}"><el-button type="text" size="small">编辑</el-button></router-link>
+                    <el-button type="text" size="small" @click="confirmDestory(row.id)">删除</el-button>
                 </span>
             </el-table-column>
         </el-table>
@@ -47,6 +51,13 @@
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="pagination.total">
         </el-pagination>
+        <el-dialog title="提示" v-model="destory.dialogVisible" size="tiny">
+            <span>确定删除ID为 {{destory.aid}} 的文章吗？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="destory.dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleDestroy">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -59,11 +70,15 @@
                     total: 0,
                     page: 1,
                     pageSize: 10,
-                }
+                },
+                destory: {
+                    aid: 0,
+                    dialogVisible: false
+                },
             }
         },
         http: {
-            root: '/api',
+            root: '/api/articles',
         },
         created() {
             this.getArticles(this.pagination.page, this.pagination.pageSize)
@@ -72,7 +87,7 @@
             getArticles(page, pageSize) {
                 console.log(page, pageSize)
                 let vm = this
-                this.$http.get('articles', {params: {page: page, size: pageSize}})
+                this.$http.get('', {params: {page: page, size: pageSize}})
                         .then((response) => {
                             console.log('Get articles')
                             let result = response.data
@@ -99,6 +114,31 @@
             },
             handleShow(id) {
                 console.log(id)
+            },
+            confirmDestory(aid) {
+                this.destory.aid = aid
+                this.destory.dialogVisible = true
+            },
+            handleDestroy() {
+                let vm = this
+                this.$http.delete(this.destory.aid.toString())
+                        .then((response) => {
+                            vm.destory.dialogVisible = false
+                            if (response.data.stat !== true) {
+                                vm.$message({
+                                    message: '成功删除id为 ' + vm.destory.aid + '的文章',
+                                    type: 'success',
+                                });
+                            } else {
+                                vm.$message({
+                                    message: '文章删除失败！',
+                                    type: 'error'
+                                })
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
             }
         }
     }
@@ -116,5 +156,17 @@
     }
     .el-pagination {
         margin-top: 10px;
+    }
+    .article-title {
+        color: #555;
+        text-decoration: none;
+    }
+</style>
+
+<style lang=scss>
+    .el-message__group p {
+        position: absolute;
+        font-size: 13px;
+        margin-top: 1px;
     }
 </style>

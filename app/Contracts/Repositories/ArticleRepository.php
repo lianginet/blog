@@ -4,5 +4,5 @@ namespace App\Contracts\Repositories;
 
 interface ArticleRepository
 {
-//    public function getArticleBy();
+    public function paginate(int $num, array $columns = ['*']);
 }

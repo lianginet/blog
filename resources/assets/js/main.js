@@ -20,6 +20,7 @@ import Index from './components/dashboard/Index'
 
 import EditArticle from './components/articles/Edit'
 import Articles from './components/articles/List'
+import ShowArticle from './components/articles/Show'
 
 const router = new VueRouter({
     // mode: 'history',
@@ -52,6 +53,11 @@ const router = new VueRouter({
                     component: EditArticle,
                 }
             ]
+        },
+        {
+            path: '/articles/:aid',
+            name: 'showArticle',
+            component: ShowArticle,
         }
     ]
 })

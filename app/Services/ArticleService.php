@@ -240,4 +240,17 @@ class ArticleService
 
         return $tid;
     }
+
+    public function deleteArticleById($aid)
+    {
+        if($this->article->delete($aid, false)) {
+            return [
+                'stat' => true,
+            ];
+        } else {
+            return [
+                'stat' => false,
+            ];
+        }
+    }
 }
