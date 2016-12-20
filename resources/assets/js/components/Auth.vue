@@ -4,7 +4,7 @@
             <el-form class="auth-form" :model="auth" ref="auth" :rules="authRules">
                 <el-form-item class="from-desc">
                     <i class="iconfont icon-favicon"></i>
-                    <span class="desc-text">博客后台登录</span>
+                    <span class="desc-text">Markdown notes -- Login</span>
                 </el-form-item>
                 <el-form-item prop="account">
                     <i class="iconfont icon-user form-icon"></i>

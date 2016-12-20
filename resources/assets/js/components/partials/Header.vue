@@ -2,7 +2,7 @@
     <div class="nav">
         <div class="logo">
             <i class="iconfont icon-favicon logo-icon"></i>
-            <span class="logo-text">简易 Markdown 笔记</span>
+            <span class="logo-text">Markdown notes</span>
         </div>
         <div class="logout">
             <i class="iconfont icon-exit" @click="logout"></i>
