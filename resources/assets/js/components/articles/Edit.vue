@@ -97,7 +97,7 @@
                 },
                 date: '',
                 time: '',
-                articleDialogVisible: true,
+                articleDialogVisible: false,
                 autoSaveTimer: '',
             }
         },
@@ -371,6 +371,7 @@
         }
     }
     .markdown {
+        color: #666;
         blockquote {
             border-left: 5px solid #eee;
             padding-left: 35px;
@@ -397,18 +398,25 @@
             font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
             line-height: 1.5;
             border-radius: 4px;
+            span {
+                /*word-break: keep-all!important;*/
+                /*white-space: pre!important;*/
+            }
         }
         pre {
             background: #f7f7f7;
             padding: 15px;
             border-radius: 2px;
+            /*word-break: keep-all;*/
+            overflow: scroll;
+            /*white-space: pre;*/
             code {
                 color: #555;
                 font-size: 14px;
-                white-space: pre-wrap;
                 padding: 0;
                 margin: 0;
                 background: none;
+                /*white-space: pre!important;*/
             }
         }
     }
