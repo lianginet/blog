@@ -52,7 +52,7 @@
             getArticle() {
                 let aid = this.$route.params.aid
                 let vm = this
-                this.$http.get(aid.toString(), {})
+                this.$http.get(aid.toString(), {params: {token: window.localStorage.token}})
                         .then((response) => {
                             let article = response.body.article
                             vm.article.id       = article.id

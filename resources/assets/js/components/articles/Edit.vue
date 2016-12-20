@@ -131,7 +131,7 @@
             },
             getTheEditArticle() {
                 let vm = this
-                this.$http.get(this.$route.params.aid + '/edit', {})
+                this.$http.get(this.$route.params.aid + '/edit', {params: {token: window.localStorage.token}})
                         .then((response) => {
                             console.log(response.data)
                             let article = response.data.article
@@ -169,7 +169,7 @@
             },
             getArticleRelatedInfo() {
                 let vm = this
-                this.$http.get('create', {})
+                this.$http.get('create', {token: window.localStorage.token})
                         .then((response) => {
                             console.log(response.data)
 
@@ -198,7 +198,9 @@
                 let vm = this
                 if (! this.article.id) {
                     // Create article
-                    this.$http.post('', vm.article)
+                    let article = vm.article
+                    article.token = window.localStorage.token
+                    this.$http.post('', article)
                             .then((response) => {
                                 // console.log(response.data)
                                 let data = response.data
@@ -209,21 +211,23 @@
                                     message: '文章保存成功！',
                                     type: 'success',
                                     duration: 500
-                                });
+                                })
                             })
                             .catch((response) => {
                                 console.log(response.data.errors)
                             })
                 } else {
                     // Update article
-                    this.$http.put(vm.article.id.toString(), vm.article)
+                    let article = vm.article
+                    article.token = window.localStorage.token
+                    this.$http.put(vm.article.id.toString(), article)
                             .then((response) => {
                                 console.log(response.data)
                                 vm.$message({
                                     message: '文章保存成功！',
                                     type: 'success',
                                     duration: 500
-                                });
+                                })
                             })
                             .catch((response) => {
                                 console.log(response.data)

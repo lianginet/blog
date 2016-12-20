@@ -84,11 +84,19 @@
             this.getArticles(this.pagination.page, this.pagination.pageSize)
         },
         methods: {
+            logout() {
+                window.localStorage.setItem('token', '')
+                this.$router.push('/auth')
+            },
             getArticles(page, pageSize) {
                 console.log(page, pageSize)
                 let vm = this
-                this.$http.get('', {params: {page: page, size: pageSize}})
+                this.$http.get('', {params: {page: page, size: pageSize, token: window.localStorage.token}})
                         .then((response) => {
+                            if (response.data == -1) {
+                                this.logout()
+                                return false
+                            }
                             console.log('Get articles')
                             let result = response.data
                             vm.articles = result.data
@@ -121,14 +129,14 @@
             },
             handleDestroy() {
                 let vm = this
-                this.$http.delete(this.destory.aid.toString())
+                this.$http.delete(this.destory.aid.toString(), {params: {token: window.localStorage.token}})
                         .then((response) => {
                             vm.destory.dialogVisible = false
                             if (response.data.stat !== true) {
                                 vm.$message({
                                     message: '成功删除id为 ' + vm.destory.aid + '的文章',
                                     type: 'success',
-                                });
+                                })
                             } else {
                                 vm.$message({
                                     message: '文章删除失败！',

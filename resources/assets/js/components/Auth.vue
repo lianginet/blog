@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <div class="auth-container">
-            <el-form class="auth-form" :model="authData" :rules="authRules">
+            <el-form class="auth-form" :model="auth" ref="auth" :rules="authRules">
                 <el-form-item class="from-desc">
                     <i class="iconfont icon-favicon"></i>
                     <span class="desc-text">博客后台登录</span>
@@ -9,7 +9,7 @@
                 <el-form-item prop="account">
                     <i class="iconfont icon-user form-icon"></i>
                     <el-input
-                        v-model="authData.account"
+                        v-model="auth.account"
                         placeholder="请输入账号"
                         type="text">
                     </el-input>
@@ -17,15 +17,14 @@
                 <el-form-item prop="password">
                     <i class="iconfont icon-lock form-icon"></i>
                     <el-input
-                        v-model="authData.password"
+                        v-model="auth.password"
                         placeholder="请输入账号"
                         type="password">
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary">提交</el-button>
+                    <el-button type="primary" @click="beforeSubmit">提交</el-button>
                 </el-form-item>
-                <router-link to="/">去后台</router-link>
             </el-form>
         </div>
     </div>
@@ -35,9 +34,9 @@
     export default {
         data() {
             return {
-                authData: {
-                    account: 'zhanghao',
-                    password: 'mima',
+                auth: {
+                    account: '',
+                    password: '',
                 },
                 authRules: {
                     account: [
@@ -55,26 +54,52 @@
             root: '/api',
         },
         created() {
-            this.$http.post('login', {
-                    account: 'lianginet',
-                    password: 'password'
-                })
-                .then((response) => {
-                    console.log(response)
-                    if (response.data.token) {
-                        let storage = window.localStorage
-                        storage['user'] = {
-                            user: 'lianginet',
-                            token: response.data.token
-                        }
-                        this.$router.push('/')
-                    }
-                })
-                .catch((response) => {
-                    console.log(response)
-                })
+            window.localStorage.user = '';
         },
-        methods: {}
+        methods: {
+            beforeSubmit() {
+                this.$refs.auth.validate((valid) => {
+                    if (!valid) {
+                        console.log('error submit!!');
+                        return false;
+                    } else {
+                        this.submitLogin()
+                    }
+                });
+            },
+            submitLogin() {
+                let vm = this
+                this.$http.post('login', vm.auth)
+                        .then((response) => {
+                            console.log(response)
+                            let data = response.data
+                            console.log(data)
+                            if (data == 0) {
+                                window.localStorage.setItem('token', '')
+                                vm.$message({
+                                    message: '账号或密码错误',
+                                    type: 'error',
+                                    duration: 1000
+                                })
+                            }
+                            if (data.admin) {
+                                let storage = window.localStorage
+                                storage.setItem('token', data.admin.token)
+                                vm.$message({
+                                    message: '登录成功',
+                                    type: 'success',
+                                    duration: 1000
+                                })
+                                setTimeout(() => {
+                                    this.$router.push('/articles')
+                                }, 1200)
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+            }
+        }
     }
 </script>
 

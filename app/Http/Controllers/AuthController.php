@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Admin;
 
 class AuthController extends Controller
 {
@@ -11,13 +12,13 @@ class AuthController extends Controller
         $account  = $request->input('account');
         $password = $request->input('password');
 
-//        if ($account == 'lianginet' && $password == 'password') {
-//            return 'login success';
-//        } else {
-//            return 'login failure';
-//        }
-        return [
-            'token' => 'token_123456',
-        ];
+        $admin = Admin::wherePassword(md5($password))->first();
+        if ($admin && $admin->account === $account) {
+            $admin->update(['token' => md5(time() . $admin->id)]);
+            $admin->password = '';
+            return $admin;
+        } else {
+            return 0;
+        }
     }
 }

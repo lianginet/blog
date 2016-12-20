@@ -16,7 +16,6 @@ Vue.http.options.emulateJSON = true
 
 import Auth from './components/Auth'
 import Console from './components/Console'
-import Index from './components/dashboard/Index'
 
 import EditArticle from './components/articles/Edit'
 import Articles from './components/articles/List'
@@ -36,7 +35,7 @@ const router = new VueRouter({
             children: [
                 {
                     path: '',
-                    component: Index
+                    redirect: 'articles'
                 },
                 {
                     path: 'articles',
@@ -65,16 +64,16 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // 判断是否登录
     let storage = window.localStorage
-    if (storage.user && to.path == '/auth') {
-        console.log('Already logined')
-        return;
-    }
-    if (!storage.user && to.path != '/auth') {
-        console.log('Not logined!')
-        router.push('/auth')
-    } else {
+    // if (storage.token && to.path == '/auth') {
+    //     console.log('Already logined')
+    //     return;
+    // }
+    // if (!storage.token && to.path != '/auth') {
+    //     console.log('Not logined!')
+    //     router.push('/auth')
+    // } else {
         next()
-    }
+    // }
 })
 
 const app = new Vue({

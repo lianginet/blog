@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>博客后台管理</title>
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_t2yjv2yzbz7aatt9.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_41ttsorff0xp3nmi.css">
     <style>
         #app {
             width: 100%;
